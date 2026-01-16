@@ -1,0 +1,40 @@
+body{
+  background-color: #4B9CD3;
+  display: flex;
+  justify-content: center;
+  font-family: cursive, Helvetica, sans-serif;
+
+
+}
+
+h1{
+  font-size: 80px;
+  line-height: 0.7;
+  color: #008080;
+  margin: 0;
+}
+
+.container{
+  width: 468px;
+  margin-top: 30px;
+}
+
+.info{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.grid{
+  width: 456px;
+  height: 456px;
+  background-color: #008080;
+  border: 7px solid #02bdbd;
+  border-radius: 6px;
+  margin-top: 20px;
+}
+
+.score-container{
+  text-align: center;
+  width: 70px;
+}
