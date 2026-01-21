@@ -77,9 +77,53 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
     }
 
+    function moveUp(){
+        for(let i = 0; i < 4; i++){
+            if(i % 4 === 0){
+                let totalOne = squares[i].innerHTML
+                let totalTwo = squares[i + width].innerHTML
+                let totalThree = squares[i + width * 2].innerHTML
+                let totalFour = squares[i + width * 3].innerHTML
+                let column = [parseInt(totalOne), parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)]
+
+                let filteredColumn = column.filter(num => num)
+                let missing = 4 - filteredColumn.length
+                let zeros = Array(missing).fill(0)
+                let newColumn = filteredColumn.concat(zeros)
+                console.log(newColumn)
+                squares[i].innerHTML = newColumn[0]
+                squares[i + width].innerHTML = newColumn[1]
+                squares[i + width * 2].innerHTML = newColumn[2]
+                squares[i + width * 3].innerHTML = newColumn[3]
+
+            }
+        }
 
 
+    }
 
+    function moveDown(){
+        for(let i = 0; i < 4; i++){
+            if(i % 4 === 0){
+                let totalOne = squares[i].innerHTML
+                let totalTwo = squares[i + width].innerHTML
+                let totalThree = squares[i + width * 2].innerHTML
+                let totalFour = squares[i + width * 3].innerHTML
+                let column = [parseInt(totalOne), parseInt(totalTwo), parseInt(totalThree), parseInt(totalFour)]
+
+                let filteredColumn = column.filter(num => num)
+                let missing = 4 - filteredColumn.length
+                let zeros = Array(missing).fill(0)
+                let newColumn = zeros.concat(filteredColumn)
+                console.log(newColumn)
+                squares[i].innerHTML = newColumn[0]
+                squares[i + width].innerHTML = newColumn[1]
+                squares[i + width * 2].innerHTML = newColumn[2]
+                squares[i + width * 3].innerHTML = newColumn[3]
+
+            }
+        }
+    }
 
     function combineRow() {
         for(let i = 0; i < 15; i++){
@@ -94,22 +138,39 @@ document.addEventListener('DOMContentLoaded', () => {
         // checkForWin()
     }
 
+    function combineColumn(){
+        for(let i = 0; i < 12; i++){
+            if(squares[i].innerHTML === squares[i+width].innerHTML){
+                let combinedTotal = parseInt(squares[i].innerHTML) + parseInt(squares[i+width].innerHTML)
+                squares[i].innerHTML = combinedTotal
+                squares[i+width].innerHTML = 0
+                score += combinedTotal
+                scoreDisplay.innerHTML = score 
+            }
+        }
+        checkForWin()
+    }
+
         //assigning keys
 
         function control(e){
             if(e.key ==='ArrowLeft'){
                 keyLeft()
-        }else if(e.key ==='ArrowRight') {
+            }else if(e.key ==='ArrowRight') {
                 keyRight()
+            }else if(e.key ==='ArrowUp'){
+                keyUp()
+            }else if(e.key ==='ArrowDown'){
+                keyDown()
             }
         }   
         document.addEventListener('keydown', control)
         
         function keyLeft(){
-        moveLeft()
-        combineRow()
-        moveLeft()
-        generate()
+            moveLeft()
+            combineRow()
+            moveLeft()
+            generate()
         }
 
         function keyRight(){
@@ -117,7 +178,78 @@ document.addEventListener('DOMContentLoaded', () => {
             combineRow()
             moveRight()
             generate()
-            }
-    
+        }
 
+        function keyUp(){
+            moveUp()
+            combineColumn()
+            moveUp()
+            generate()
+        }
+    
+        function keyDown(){
+            moveDown()
+            combineColumn()
+            moveDown()
+            generate()
+        }
+//checking fo r2048
+        function checkForWin(){
+            for(let i = 0; i < squares; i++){
+                if(squares[i].innerHTML == 2048){
+                    resultDisplay.innerHTML = 'You WIN!'
+                    document.removeEventListener('keydown', control)
+                }
+            }
+        }
+        
+        function checkForGameOver(){
+            let zeros = 0
+            for( let i = 0; i < squares.length; i++ )
+                if(squares[i].innerHTML == 0){
+                    zeros
+                }
+            if (zeros === 0) {
+                resultDisplay.innerHTML = 'You LOSE!'
+                document.removeEventListener('keydown', control)
+                setTimeout(() => clear())
+            }
+        }
+
+
+        // checkForGameOver()
+
+        function addColors() {
+            for (let i = 0; i < squares.length; i++) {
+              let value = parseInt(squares[i].innerHTML)
+          
+              if (value === 0) {
+                squares[i].style.backgroundColor = '#000080' // navy (empty)
+                squares[i].style.color = '#000080'
+              } 
+              else if (value === 2) {
+                squares[i].style.backgroundColor = '#87CEEB' // sky blue
+                squares[i].style.color = '#000080'
+              } 
+              else if (value === 4) {
+                squares[i].style.backgroundColor = '#ADD8E6' // light blue
+                squares[i].style.color = '#000080'
+              } 
+              else if (value === 8) {
+                squares[i].style.backgroundColor = '#4169E1' // Carolina blue
+                squares[i].style.color = '#000080'
+              } 
+              else if (value === 16) {
+                squares[i].style.backgroundColor = '#6A5ACD' // slate blue
+                squares[i].style.color = 'white'
+              } 
+              else {
+                squares[i].style.backgroundColor = '#483D8B' // dark slate (32+)
+                squares[i].style.color = 'white'
+              }
+            }
+          }
+        addColors()
+
+        let myTimer = setInterval(addColors, 50)
 })
